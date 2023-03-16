@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- font awesome  -->
+    <script
+      src="https://kit.fontawesome.com/f5a24ca635.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- tailwind cdn -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <!-- flowbite cdn -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.css"
+      rel="stylesheet"
+    />
+    <!-- daisy ui cdn -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@2.51.4/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- tailwind config file -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {},
+          screens: {
+            xs: "480px",
+            sm: "768px",
+            md: "992px",
+            lg: "1024px",
+            xl: "1440px",
+          },
+          container: {
+            center: true,
+          },
+          listStyleType: {
+            none: "none",
+            disc: "disc",
+            decimal: "decimal",
+            square: "square",
+            roman: "upper-roman",
+          },
+          colors: {
+            textPrimary: "#111111",
+            textSecondary: "#585858",
+            btnPrimary: "#EB5757",
+            lightPink: "#FEF7F7",
+          },
+        },
+      };
+    </script>
+  </head>
+  <body>
+    <main>
+      <section class="py-14 lg:py-16">
+        <div class="container mx-auto md:max-w-7xl px-6 w-full">
+          <div class="text-center mb-8">
+            <h2 class="text-[45px] font-[600] text-textPrimary">
+              AI Universe Hub
+            </h2>
+
+            <button
+              class="py-2.5 px-6 bg-btnPrimary text-white rounded-lg my-3 capitalize"
+              onClick="{handleSort}"
+            >
+              Sort by date
+            </button>
+          </div>
+
+          <!-- display tools card -->
+          <div
+            id="toolsContainer"
+            class="flex items-center justify-center flex-wrap mb-5"
+          >
+            <!-- modal data -->
+          </div>
+
+          <!-- modal data -->
+          <input type="checkbox" id="my-modal-3" class="modal-toggle" />
+          <div class="modal">
+            <div class="modal-box relative w-11/12 max-w-6xl">
+              <label
+                for="my-modal-3"
+                class="btn btn-sm btn-circle absolute right-3 top-3"
+              >
+                ✕
+              </label>
+              <div id="modalBody" class="p-10"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- flowbite js cdn -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.4/flowbite.min.js"></script>
+    <!-- daisy ui cdn -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- custom js  -->
+    <script src="js/main.js"></script>
+  </body>
+</html>
