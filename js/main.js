@@ -6,6 +6,7 @@ const loadToolsData = async () => {
     );
     const data = await res.json();
     const toolsData = await data.data.tools;
+
     return toolsData;
   } catch (err) {
     console.log(err);
@@ -16,7 +17,16 @@ const loadToolsData = async () => {
 
 //pass the all tools dat in tools variable
 
-const allTools = loadToolsData();
+const slicedTools = async () => {
+  const allTools = await loadToolsData();
+
+  let cardToShow = 6;
+
+  let next = cardToShow;
+
+  const slicedData = allTools?.slice(0, next);
+  return slicedData;
+};
 
 const displayToolsData = async (allTools) => {
   const tools = await allTools;
@@ -24,15 +34,19 @@ const displayToolsData = async (allTools) => {
   //get the tools card container
   const toolsRow = document.querySelector("#toolsContainer");
 
-  // toolsRow.innerHTML= "";
+  toolsRow.innerHTML = "";
 
-  tools.map((tool) => {
+  tools?.map((tool) => {
     const { id, name, image, features, published_in, description, links } =
       tool;
 
-    const [linkName, url] = links;
+    //       let linkObj= {};
 
-    console.log(linkName, url);
+    // links.map((link) => {
+    //       linkItem: link;
+    //     });
+
+    //console.log(linkName, url);
     console.log(links);
     //create a column div
     const div = document.createElement("div");
@@ -69,8 +83,8 @@ const displayToolsData = async (allTools) => {
         </div>
       </div>
      
-      <label for="my-modal-3" onclick="handleShowDetails('${image}','${features}','${linkName}','${url}','${description}',)">
-        <span class="text-[22px] text-btnPrimary text-center rounded-full w-[46px] h-[46px] bg-lightPink shadow shadow-gray-200 flex items-center justify-center">
+      <label for="my-modal-3" onclick="handleShowDetails('${image}','${features}','${links}','${description}',)">
+        <span class="text-[18px] text-btnPrimary text-center rounded-full w-[46px] h-[46px] bg-lightPink shadow shadow-gray-200 flex items-center justify-center">
         <i class="fa-solid fa-arrow-right"></i>
         </span>
       </label>
@@ -90,11 +104,11 @@ const displayToolsData = async (allTools) => {
 
 // display details data when clicking on modal
 
-displayToolsData(allTools);
+displayToolsData(slicedTools());
 
 //display modal when clicking on arrow button
 
-const handleShowDetails = (image, features, linkName, url, description) => {
+const handleShowDetails = (image, features, links, description) => {
   console.log(image, typeof features);
 
   let ftArr = features.split(",");
@@ -162,8 +176,8 @@ const handleShowDetails = (image, features, linkName, url, description) => {
           
     
   <li class="list-disc mb-2 text-[16px] font-normal text-textSecondary ml-4">
-    <a href="${url ? url : "No data available"}">
-      ${linkName.name ? linkName.name : "No data available"}
+    <a href="">
+     
     </a>
   </li>
   
@@ -195,3 +209,43 @@ const handleShowDetails = (image, features, linkName, url, description) => {
 };
 
 //onclick="handleShowDetails('${tool}')
+// ${linkName.name ? linkName.name : "No data available"}
+
+//sort data by date
+const sortBtn = document.querySelector("#sortBtn");
+if (sortBtn) {
+  sortBtn.addEventListener("click", async () => {
+    const toolsData = await loadToolsData();
+
+    const sortedTools = toolsData.sort(
+      (a, b) => Date.parse(b.published_in) - Date.parse(a.published_in)
+    );
+
+    displayToolsData(sortedTools);
+  });
+}
+
+//show all data clicking on see mor btn
+const loadMoreBtn = document.querySelector("#seeMoreBtn");
+
+if (loadMoreBtn) {
+  loadMoreBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const toolsInfo = await loadToolsData();
+    console.log("clicked", toolsInfo);
+    displayToolsData(toolsInfo);
+    // const toolsLen = await toolsData.length;
+
+    // const restTools = parseInt(toolsLen - cardToShow);
+
+    // return (next = parseInt(next + restTools));
+
+    // console.log(next, toolsLen, restTools, await allTools);
+  });
+}
+
+if (slicedTools()) {
+  loadMoreBtn.style.display = "block";
+} else {
+  loadMoreBtn.style.display = "none";
+}

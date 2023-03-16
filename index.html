@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Ai Universe Hub</title>
+    <!-- favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
     <!-- font awesome  -->
     <script
       src="https://kit.fontawesome.com/f5a24ca635.js"
@@ -71,8 +73,8 @@
             </h2>
 
             <button
+              id="sortBtn"
               class="py-2.5 px-6 bg-btnPrimary text-white rounded-lg my-3 capitalize"
-              onClick="{handleSort}"
             >
               Sort by date
             </button>
@@ -98,6 +100,16 @@
               </label>
               <div id="modalBody" class="p-10"></div>
             </div>
+          </div>
+
+          <!-- see all -->
+          <div className="text-center">
+            <button
+              id="seeMoreBtn"
+              className="py-2.5 px-6 bg-btnPrimary text-white rounded-lg text-base capitalize"
+            >
+              see More
+            </button>
           </div>
         </div>
       </section>
