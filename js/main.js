@@ -15,6 +15,26 @@ const loadToolsData = async () => {
 
 //console.log(loadToolsData());
 
+//show spinner before loading the data
+const loadingSpinner = (isLoaded) => {
+  const spinnerLoader = document.getElementById("spinner");
+  if (isLoaded) {
+    spinnerLoader.classList.remove("hidden");
+  } else {
+    spinnerLoader.classList.add("hidden");
+  }
+};
+
+//hide see more btn before loading tools data
+const hideSeeMoreBtn = (isVisible) => {
+  const seeMorebtn = document.getElementById("seeMoreBtn");
+
+  if (!isVisible) {
+    seeMorebtn.classList.add("hidden");
+  } else {
+    seeMorebtn.classList.remove("hidden");
+  }
+};
 //pass the all tools dat in tools variable
 
 const slicedTools = async () => {
@@ -25,10 +45,19 @@ const slicedTools = async () => {
   let next = cardToShow;
 
   const slicedData = allTools?.slice(0, next);
+  //visible this button after loading the data
+  hideSeeMoreBtn(true);
   return slicedData;
 };
 
 const displayToolsData = async (allTools) => {
+  //display loading spinner while fetching data
+  loadingSpinner(true);
+
+  //hide this button before loadig the data
+  hideSeeMoreBtn(false);
+
+  //get all tools data
   const tools = await allTools;
 
   //get the tools card container
@@ -36,10 +65,14 @@ const displayToolsData = async (allTools) => {
 
   toolsRow.innerHTML = "";
 
-  tools?.map((tool) => {
+  tools?.forEach((tool) => {
     const { id, name, image, features, published_in, description, links } =
       tool;
 
+    const modifiedFeatures = features.join();
+
+    var str2 = modifiedFeatures.replace(/,/g, " ");
+    console.log(typeof str2);
     //       let linkObj= {};
 
     // links.map((link) => {
@@ -53,7 +86,7 @@ const displayToolsData = async (allTools) => {
     div.classList.add("w-full", "sm:w-6/12", "md:w-4/12", "mx-auto", "sm:mx-0");
 
     div.innerHTML = `
-    <div class="m-3 border border-gray-200 rounded-lg text-left p-5 min-h-[507px]">
+    <div class="m-3 border border-gray-200 rounded-lg text-left p-5 card_h">
     <img
       src="${image ? image : "No data available"}"
       alt=""
@@ -68,6 +101,7 @@ const displayToolsData = async (allTools) => {
       </li>
         `
       )}
+      
     </ul>
     <hr class="my-4 text-gray-300" />
     <div class="flex items-center justify-between">
@@ -98,6 +132,9 @@ const displayToolsData = async (allTools) => {
     //append the div to the parent element
     toolsRow.appendChild(div);
   });
+
+  //remove loading spinner once data is loaded
+  loadingSpinner(false);
 };
 
 //
@@ -127,23 +164,23 @@ const handleShowDetails = (image, features, links, description) => {
   modalWrapper.innerHTML = `
   <div class="flex items-center flex-wrap lg:flex-nowrap">
   <div class="w-full md:w-6/12">
-    <div class="p-8 border border-[#EB5757] rounded bg-lightPink min-h-[500px] mx-2.5 h-[500px]">
+    <div class="p-3 lg:p-8 border border-[#EB5757] rounded bg-lightPink col_h mx-2.5 ">
       <p class="text-[25px] font-[600] text-textprimary mb-4">
         ${description ? description : "No Data Available"}
       </p>
       
-      <div class="flex items-center justify-center  mb-5">
-        <div class="bg-white p-6 w-[130px] min-h-[103px] flex items-center justify-center rounded-lg mx-2">
+      <div class="flex items-center md:justify-center flex-wrap md:flex-nowrap mb-5">
+        <div class="bg-white p-3 lg:p-6 box_w flex items-center justify-center rounded-lg mx-2 mt-4 md:mt-0">
           <span class="text-semibold text-lg text-[#03A30A] leading-[21px]">
             $10/month Basic
           </span>
         </div>
-        <div class="bg-white p-6 w-[130px] min-h-[103px] flex items-center justify-center rounded-lg mx-2">
+        <div class="bg-white p-3 lg:p-6 box_w flex items-center justify-center rounded-lg mx-2 mt-4 md:mt-0">
           <span class="text-semibold text-lg text-[#F28927] leading-[21px]">
             $50/month Pro
           </span>
         </div>
-        <div class="bg-white p-6 w-[130px]  min-h-[103px] flex items-center justify-center rounded-lg mx-2">
+        <div class="bg-white p-3 lg:p-6 box_w flex items-center justify-center rounded-lg mx-2 mt-4 md:mt-0">
           <span class="text-semibold text-lg text-[#EB5757] leading-[21px]">
             Contact us Enterprise
           </span>
@@ -181,15 +218,15 @@ const handleShowDetails = (image, features, links, description) => {
     </a>
   </li>
   
-)}
+
           </ul>
         </div>
       </div>
     </div>
   </div>
   <div class="w-full md:w-6/12">
-    {/* modal image info */}
-    <div class="p-6 text-center mx-2.5 mt-5 md:mt-0 border border-gray-200 min-h-[500px] h-[500px] rounded ">
+   
+    <div class="p-6 text-center mx-2.5 mt-5 md:mt-0 border border-gray-200 col_h rounded ">
       <img
         src="${image ? image : "No data available"}"
         class="w-[437px] h-[339px] max-w-full rounded-lg "
@@ -208,9 +245,6 @@ const handleShowDetails = (image, features, links, description) => {
   `;
 };
 
-//onclick="handleShowDetails('${tool}')
-// ${linkName.name ? linkName.name : "No data available"}
-
 //sort data by date
 const sortBtn = document.querySelector("#sortBtn");
 if (sortBtn) {
@@ -222,6 +256,8 @@ if (sortBtn) {
     );
 
     displayToolsData(sortedTools);
+    //visible this button after loading the data
+    hideSeeMoreBtn(true);
   });
 }
 
@@ -234,18 +270,7 @@ if (loadMoreBtn) {
     const toolsInfo = await loadToolsData();
     console.log("clicked", toolsInfo);
     displayToolsData(toolsInfo);
-    // const toolsLen = await toolsData.length;
 
-    // const restTools = parseInt(toolsLen - cardToShow);
-
-    // return (next = parseInt(next + restTools));
-
-    // console.log(next, toolsLen, restTools, await allTools);
+    hideSeeMoreBtn(false);
   });
-}
-
-if (slicedTools()) {
-  loadMoreBtn.style.display = "block";
-} else {
-  loadMoreBtn.style.display = "none";
 }
